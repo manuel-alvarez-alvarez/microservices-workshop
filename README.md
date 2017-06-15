@@ -82,17 +82,17 @@ The purpose of this workshop is to build a particle detector that will try to fi
 
 ![Standard Model](https://upload.wikimedia.org/wikipedia/commons/0/00/Standard_Model_of_Elementary_Particles.svg)
 
-The workshop will provide you an [accelerator](https://github.com/manuel-alvarez-alvarez/microservices-workshop-accelerator/tree/master/accelerator-web) that will send [snapshots](https://github.com/manuel-alvarez-alvarez/microservices-workshop-accelerator/blob/master/accelerator-api/src/main/java/es/malvarez/microservices/api/Snapshot.java) every second to a RabbitMQ containing the lists of detected particles in the different [experiments](https://github.com/manuel-alvarez-alvarez/microservices-workshop-accelerator/blob/master/accelerator-api/src/main/java/es/malvarez/microservices/api/Experiment.java). For each [deteced particle](https://github.com/manuel-alvarez-alvarez/microservices-workshop-accelerator/blob/master/accelerator-api/src/main/java/es/malvarez/microservices/api/DetectedParticle.java) you will find the following information:
+The workshop will provide you an [accelerator](https://github.com/manuel-alvarez-alvarez/microservices-workshop-common/tree/master/accelerator) that will send [snapshots](https://github.com/manuel-alvarez-alvarez/microservices-workshop-common/blob/master/api/src/main/java/es/malvarez/microservices/api/Snapshot.java) every second to a RabbitMQ containing the lists of detected particles in the different [experiments](https://github.com/manuel-alvarez-alvarez/microservices-workshop-common/blob/master/api/src/main/java/es/malvarez/microservices/api/Experiment.java). For each [deteced particle](https://github.com/manuel-alvarez-alvarez/microservices-workshop-common/blob/master/api/src/main/java/es/malvarez/microservices/api/DetectedParticle.java) you will find the following information:
 
-1. The  [experiment](https://github.com/manuel-alvarez-alvarez/microservices-workshop-accelerator/blob/master/accelerator-api/src/main/java/es/malvarez/microservices/api/Experiment.java) where it was detected
-2. The [spin](https://github.com/manuel-alvarez-alvarez/microservices-workshop-accelerator/blob/master/accelerator-api/src/main/java/es/malvarez/microservices/api/Spin.java) of the particle
-3.  The [charge](https://github.com/manuel-alvarez-alvarez/microservices-workshop-accelerator/blob/master/accelerator-api/src/main/java/es/malvarez/microservices/api/Charge.java) of the particle
+1. The  [experiment](https://github.com/manuel-alvarez-alvarez/microservices-workshop-common/blob/master/api/src/main/java/es/malvarez/microservices/api/Experiment.java) where it was detected
+2. The [spin](https://github.com/manuel-alvarez-alvarez/microservices-workshop-common/blob/master/api/src/main/java/es/malvarez/microservices/api/Spin.java) of the particle
+3.  The [charge](https://github.com/manuel-alvarez-alvarez/microservices-workshop-common/blob/master/api/src/main/java/es/malvarez/microservices/api/Charge.java) of the particle
 4.  The mass in MeV/c2 (it's always an exact number, e.g. for an electron it will always be 0.511MeV/c2 and for the tau neutrino it will be 15.5 MeV/c2)
 
 The tool we are about to build should:
 
-1. Detect collisions inside [snapshots](https://github.com/manuel-alvarez-alvarez/microservices-workshop-accelerator/blob/master/accelerator-api/src/main/java/es/malvarez/microservices/api/Snapshot.java). A collision happens when three or more particles are detected in the same [experiment](https://github.com/manuel-alvarez-alvarez/microservices-workshop-accelerator/blob/master/accelerator-api/src/main/java/es/malvarez/microservices/api/Experiment.java)
-2.  Analize each one of the collisions and get the [type](https://github.com/manuel-alvarez-alvarez/microservices-workshop-accelerator/blob/master/accelerator-api/src/main/java/es/malvarez/microservices/api/ParticleType.java) of the particles to find the elusive [chameleons](https://en.wikipedia.org/wiki/Chameleon_particle)
+1. Detect collisions inside [snapshots](https://github.com/manuel-alvarez-alvarez/microservices-workshop-common/blob/master/api/src/main/java/es/malvarez/microservices/api/Snapshot.java). A collision happens when three or more particles are detected in the same [experiment](https://github.com/manuel-alvarez-alvarez/microservices-workshop-common/blob/master/api/src/main/java/es/malvarez/microservices/api/Experiment.java)
+2.  Analize each one of the collisions and get the [type](https://github.com/manuel-alvarez-alvarez/microservices-workshop-common/blob/master/api/src/main/java/es/malvarez/microservices/api/ParticleType.java) of the particles to find the elusive [chameleons](https://en.wikipedia.org/wiki/Chameleon_particle)
 
 
 ## Workflow
