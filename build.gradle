@@ -30,6 +30,9 @@ targetCompatibility = JavaVersion.VERSION_1_8
 repositories {
     mavenLocal()
     mavenCentral()
+    maven {
+        url  "http://dl.bintray.com/malvarez/microservices-workshop-maven" 
+    }
 }
 
 dependencyManagement {
