@@ -1,0 +1,50 @@
+version: '2'
+
+services:
+
+  zookeeper:
+    image: wurstmeister/zookeeper:3.4.6
+    container_name: zookeper
+    expose:
+      - 2181
+
+  kafka:
+    image: wurstmeister/kafka:0.10.2.1
+    container_name: kafka
+    expose:
+      - 9092
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: "kafka"
+      KAFKA_ADVERTISED_PORT: "9092"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - zookeeper
+
+  accelerator:
+    image: manvel7650/microservices-workshop-accelerator:latest
+    container_name: accelerator
+    expose:
+      - 8080
+    ports:
+      - "8080:8080"
+    environment:
+      - PROFILE=
+    depends_on:
+      - kafka
+
+  monolith:
+    image: manvel7650/microservices-workshop-monolith:latest
+    container_name: monolith
+    expose:
+      - 8080
+      - 5005
+    ports:
+      - "8081:8080"
+      - "5005:5005"
+    environment:
+      - PROFILE=
+      - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
+    depends_on:
+      - kafka
