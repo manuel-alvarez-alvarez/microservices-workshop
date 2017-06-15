@@ -1,0 +1,29 @@
+spring:
+  cloud:
+    stream:
+      bindings:
+        accelerator_input:
+          binder: kafka
+          destination: accelerator
+
+        event_store_input:
+          group: write-model
+          binder: kafka
+          destination: events
+        event_store_output:
+          binder: kafka
+          destination: events
+
+        event_broadcast_input:
+          binder: kafka
+          destination: events
+
+      kafka:
+        binder:
+          headers:
+            - AGGREGATE
+            - EVENT_TYPE
+          brokers: kafka
+          defaultBrokerPort: 9092
+          zkNodes: zookeeper
+          defaultZkPort: 2181

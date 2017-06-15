@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: collision-read-model
+  cloud:
+    stream:
+      bindings:
+        event_store_input:
+          group: collision
+          binder: kafka
+          destination: events
+
+      kafka:
+        binder:
+          headers:
+            - AGGREGATE
+            - EVENT_TYPE
+          brokers: kafka
+          defaultBrokerPort: 9092
+          zkNodes: zookeeper
+          defaultZkPort: 2181
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://registry:8080/eureka

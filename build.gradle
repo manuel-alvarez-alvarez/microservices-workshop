@@ -1,0 +1,127 @@
+buildscript {
+    ext {
+        springBootVersion = '1.5.2.RELEASE'
+        gradleDockerVersion = '1.2'
+        gradleWrapperVersion = '3.5'
+        workshopVersion = '0.0.1-SNAPSHOT'
+        junitParamsVersion = '1.1.0'
+    }
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("se.transmode.gradle:gradle-docker:$gradleDockerVersion")
+        classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3")
+    }
+}
+
+configure(allprojects) {
+
+    apply plugin: 'java'
+
+    group = 'es.malvarez.microservices.workshop'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+}
+
+configure(project(":ubiquitous-language")) {
+    dependencies {
+        compile("es.malvarez.microservices.workshop:cqrs:$workshopVersion")
+    }
+}
+
+configure([project(":write-model"), project(":collision-read-model")]) {
+
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'docker'
+    apply plugin: 'org.springframework.boot'
+
+    dependencies {
+        compile(project(":ubiquitous-language"))
+        compile('org.springframework.cloud:spring-cloud-stream')
+        compile("es.malvarez.microservices.workshop:api:$workshopVersion")
+        compile("es.malvarez.microservices.workshop:cqrs:$workshopVersion")
+        compile('org.springframework.cloud:spring-cloud-stream')
+
+        testCompile('org.springframework.boot:spring-boot-starter-test')
+        testCompile("pl.pragmatists:JUnitParams:$junitParamsVersion")
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:Dalston.RELEASE"
+            mavenBom 'org.springframework.cloud:spring-cloud-stream-dependencies:Chelsea.SR1'
+        }
+    }
+
+
+}
+
+configure(project(":write-model")) {
+
+    springBoot {
+        mainClass = "es.malvarez.microservices.wm.WriteModelApplication"
+    }
+
+    dependencies {
+        compile('org.springframework.cloud:spring-cloud-starter-stream-kafka')
+    }
+
+    task buildDocker(type: Docker) {
+        tag = "manvel7650/microservices-workshop-write-model"
+        tagVersion = 'latest'
+        dockerfile = file("${projectDir}/src/main/docker/Dockerfile")
+        doFirst {
+            copy {
+                from jar
+                into stageDir
+                rename(jar.archivePath.name, 'app.jar')
+            }
+        }
+    }
+    buildDocker.group = 'build'
+    build.finalizedBy buildDocker
+}
+
+configure(project(":collision-read-model")) {
+
+    dependencies {
+        compile("es.malvarez.microservices.workshop:web:$workshopVersion")
+        compile('org.springframework.cloud:spring-cloud-starter-stream-kafka')
+        compile('org.springframework.cloud:spring-cloud-starter-eureka')
+        compile('org.springframework.boot:spring-boot-starter-web')
+    }
+
+    springBoot {
+        mainClass = "es.malvarez.microservices.collision.CollisionReadModelApplication"
+    }
+
+    task buildDocker(type: Docker) {
+        tag = "manvel7650/microservices-workshop-collision-read-model"
+        tagVersion = 'latest'
+        dockerfile = file("${projectDir}/src/main/docker/Dockerfile")
+        doFirst {
+            copy {
+                from jar
+                into stageDir
+                rename(jar.archivePath.name, 'app.jar')
+            }
+        }
+    }
+    buildDocker.group = 'build'
+    build.finalizedBy buildDocker
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = gradleWrapperVersion
+}
+
