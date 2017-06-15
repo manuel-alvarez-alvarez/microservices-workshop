@@ -1,0 +1,79 @@
+buildscript {
+    ext {
+        springBootVersion = '1.5.2.RELEASE'
+        gradleDockerVersion = '1.2'
+        gradleWrapperVersion = '3.5'
+        workshopVersion = '0.0.1-SNAPSHOT'
+        junitParamsVersion = '1.1.0'
+    }
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("se.transmode.gradle:gradle-docker:$gradleDockerVersion")
+        classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'docker'
+apply plugin: 'org.springframework.boot'
+
+group = 'es.malvarez.microservices.workshop'
+version = workshopVersion
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:Dalston.RELEASE"
+        mavenBom 'org.springframework.cloud:spring-cloud-stream-dependencies:Chelsea.SR1'
+    }
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile("es.malvarez.microservices.workshop:api:$workshopVersion")
+    compile("es.malvarez.microservices.workshop:web:$workshopVersion")
+    compile("es.malvarez.microservices.workshop:cqrs:$workshopVersion")
+    compile('org.springframework.cloud:spring-cloud-stream')
+    compile('org.springframework.cloud:spring-cloud-starter-stream-kafka')
+
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile("pl.pragmatists:JUnitParams:$junitParamsVersion")
+}
+
+springBoot {
+    mainClass = "es.malvarez.microservices.cqrs.CqrsApplication"
+}
+
+bootRun {
+    systemProperties System.properties
+}
+
+task buildDocker(type: Docker) {
+    tag = "manvel7650/microservices-workshop-cqrs"
+    tagVersion = 'latest'
+    dockerfile = file("${projectDir}/src/main/docker/Dockerfile")
+    doFirst {
+        copy {
+            from jar
+            into stageDir
+            rename(jar.archivePath.name, 'app.jar')
+        }
+    }
+}
+buildDocker.group = 'build'
+build.finalizedBy buildDocker
+
+task wrapper(type: Wrapper) {
+    gradleVersion = gradleWrapperVersion
+}
