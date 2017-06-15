@@ -63,10 +63,6 @@ $ docker pull openjdk:8-alpine
 ```
 
 ```shell
-$ docker pull rabbitmq:3.6.9
-```
-
-```shell
 $ docker pull wurstmeister/zookeeper:3.4.6
 ```
 
@@ -106,14 +102,14 @@ As stated before, we are going to follow the next steps in the workshop:
 In order to do it there are several branches (the ones with the suffix *_start* are the starting point for the step, and the ones with *_end* contain my very own lousy solution).
 
 * Monolith
-1. *monolith_start*
-2. *monolith_end*
+1. ```git checkout monolith_start```
+2. ```git checkout monolith_end```
 * CQRS/ES
-1. *cqrs_start*
-2. *cqrs_end*
+1. ```git checkout cqrs_start```
+2. ```git checkout cqrs_end```
 * Microservices
-1. *microservices_start*
-2. *microservices_end*
+1. ```git checkout microservices_start```
+2. ```git checkout microservices_end```
 
 So let's start buidling the **Monolith**
 
