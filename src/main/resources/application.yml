@@ -1,0 +1,20 @@
+detector:
+  name: lousy-detector
+  apiHref: http://localhost:8081
+
+spring:
+  cloud:
+    stream:
+      bindings:
+        accelerator_input:
+          binder: kafka
+          destination: accelerator
+      kafka:
+        binder:
+          headers:
+            - AGGREGATE
+            - EVENT_TYPE
+          brokers: kafka
+          defaultBrokerPort: 9092
+          zkNodes: zookeeper
+          defaultZkPort: 2181
