@@ -1,1 +1,1 @@
-include 'ubiquitous-language', 'write-model', 'collision-read-model'
+include 'ubiquitous-language', 'write-model', 'collision-read-model', 'registry', 'gateway'
