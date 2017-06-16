@@ -35,14 +35,14 @@ $ javac -version
 You must have a working installation of Docker as well, the community verison will work just fine ([Download Docker Community Edition](https://www.docker.com/community-edition#/download)). You can test it by running the following command in a console:
 
 ```shell
-$ docker run docker/whalesay cowsay I'm ready to rock
+$ docker run docker/whalesay cowsay Ready to rock
 ```
 
 You should see something like this:
 ```
- ___________________
-< I'm ready to rock >
- -------------------
+ _______________
+< Ready to rock >
+ ---------------
     \
      \
       \
