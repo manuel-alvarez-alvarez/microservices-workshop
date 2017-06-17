@@ -76,7 +76,7 @@ Remember to install ```docker-compose``` if it's not installed by default ([Inst
 $ docker-compose -v
 ```
 
-In a linux machine docker commands require ```sudo``` but you can manage it as non-root user following this [guide](https://docs.docker.com/engine/installation/linux/linux-postinstall/).
+> **Information**. In a linux machine docker commands require ```sudo``` but you can manage it as non-root user following this [guide](https://docs.docker.com/engine/installation/linux/linux-postinstall/).
 
 ## Domain
 
