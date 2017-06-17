@@ -70,6 +70,14 @@ $ docker pull wurstmeister/zookeeper:3.4.6
 $ docker pull wurstmeister/kafka:0.10.2.1
 ```
 
+Remember to install ```docker-compose``` if it's not installed by default ([Install Docker Compose](https://docs.docker.com/compose/install/)). . You can test it by running the following command in a console:
+
+```shell
+$ docker-compose -v
+```
+
+In a linux machine docker commands require ```sudo``` but you can manage it as non-root user following this [guide](https://docs.docker.com/engine/installation/linux/linux-postinstall/).
+
 ## Domain
 
 > **Disclaimer**. All resemblance with reality is pure fiction, nothing shown here is accurate from a physics point of view.
