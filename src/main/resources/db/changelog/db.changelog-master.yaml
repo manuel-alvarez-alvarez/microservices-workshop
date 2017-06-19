@@ -1,0 +1,63 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: malvarez
+      changes:
+        - createTable:
+            tableName: collision
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: snapshot
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: experiment
+                  type: varchar(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: when
+                  type: timestamp
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: particle
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: collision
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: spin
+                  type: varchar(8)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: charge
+                  type: varchar(8)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: massInMevC2
+                  type: decimal
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: varchar(32)

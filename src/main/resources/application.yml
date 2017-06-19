@@ -1,10 +1,5 @@
-detector:
-# TODO 1. Enter a UNIQUE name for your detector here
-#  name: MyAwesomeDetector
-  apiHref: http://localhost:8081
-
 spring:
-# TODO 2. Configure spring streams to connect to kafka
+# TODO 1. Configure spring streams to connect to kafka
 #  cloud:
 #    stream:
 #      bindings:
@@ -19,16 +14,8 @@ spring:
 #          binder: kafka
 #          destination: events
 
-#        event_broadcast_input:
-#          binder: kafka
-#          destination: events
-
 #      kafka:
 #        binder:
 #          headers:
 #            - AGGREGATE
 #            - EVENT_TYPE
-#          brokers: kafka
-#          defaultBrokerPort: 9092
-#          zkNodes: zookeeper
-#          defaultZkPort: 2181
