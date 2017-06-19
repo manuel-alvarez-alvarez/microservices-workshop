@@ -5,38 +5,35 @@
 The Monolith is the first step of our journey, we will build a particle detector as an ugly Monolith based on [Spring Boot](https://projects.spring.io/spring-boot/)
 and [Spring Cloud Stream](https://cloud.spring.io/spring-cloud-stream/).
 
-## Prerequisites
+## Homework
 
-First try to build the detector by running a gradle build:
+All the steps that you need to take are marked with ```TODO x``` in the source code:
+
+1. Configure [Spring Cloud Stream](https://cloud.spring.io/spring-cloud-stream/) to connect to Kafka using the *accelerator* topic
+2. Tell spring to enable the stream artifacts in the project, we will be using the sink [AcceleratorSink](https://github.com/manuel-alvarez-alvarez/microservices-workshop-common/blob/master/api/src/main/java/es/malvarez/microservices/api/AcceleratorSink.java)
+3. Start listening to the data coming from the accelerator
+4. Implement the method to find collisions from snapshots coming from the accelerator
+5. Discover the particles part of the collisions from the previous point
+
+## Build and run
+
+You can build the application just by running:
 
 ```shell
 $ gradlew build
 ```
 
-When everything builds properly you can startup the whole system with the the following command:
+To run the whole system you only have to execute the command:
 
 ```shell
 $ docker-compose up
 ```
 
-It will start the accelerator, a *Kafka* node and finally your detector:
+It will start the accelerator, a *Zoo Keeper* node, a *Kafka* node and finally your detector:
 1. Accelerator available at [http://localhost:8080](http://localhost:8080)
 2. Detector available at [http://localhost:8081](http://localhost:8081)
 
 If you want to debug your Monolith you can connect with an external debugger to the port 5005 in your local machine.
-
-## Steps
-
-All the steps that you need to take are marked with ```TODO x``` in the source code:
-
-1. Enter a unique name for you detector (this is just for fun)
-2. Configure [Spring Cloud Stream](https://cloud.spring.io/spring-cloud-stream/) to connect to Kafka using the *accelerator* topic
-3. Tell spring to enable the stream artifacts in the project, we will be using the sink [AcceleratorSink](https://github.com/manuel-alvarez-alvarez/microservices-workshop-common/blob/master/api/src/main/java/es/malvarez/microservices/api/AcceleratorSink.java)
-4. Start listening to the data coming from the accelerator
-5. Implement the method to find collisions from snapshots coming from the accelerator
-6. Discover the particles part of the collisions from the previous point
-
-Remember that, in order to have a successful Monolith, all the tests in [DetectorServiceTest](https://github.com/manuel-alvarez-alvarez/microservices-workshop/blob/monolith_start/src/test/java/es/malvarez/microservices/monolith/service/DetectorServiceTest.java) must pass.
 
 ## Troubleshooting
 
