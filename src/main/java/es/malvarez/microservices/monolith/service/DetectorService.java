@@ -30,9 +30,9 @@ public class DetectorService {
 
 
     // TODO 4. Start listening to the data coming from the nice accelerator
-    /*@StreamListener(AcceleratorSink.INPUT)
+    @StreamListener(AcceleratorSink.INPUT)
     public void onSnapshot(final Snapshot snapshot) {
-        this.detect(snapshot)
+        /*this.detect(snapshot)
                 .map(collisionDetected -> {
                     Collision.Builder builder = new Collision.Builder()
                             .setSnapshot(snapshot)
@@ -43,31 +43,34 @@ public class DetectorService {
                     );
                     return builder.build();
                 })
-                .forEach(collisionService::newCollision);
-    }*/
+                .forEach(collisionService::newCollision);*/
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * Detect collisions: a collision happens when tree or more particles are detected in the same experiment.
      */
     // TODO 5. Find the collisions from the snapshot
-    /*public Stream<CollisionDetected> detect(final Snapshot snapshot) {
-        return snapshot.getParticles().stream()
+    public Stream<CollisionDetected> detect(final Snapshot snapshot) {
+        /*return snapshot.getParticles().stream()
                 .collect(Collectors.groupingBy(DetectedParticle::getExperiment))
                 .entrySet()
                 .stream()
                 .filter(it -> it.getValue().size() >= PARTICLES_PER_COLLISION)
-                .map(it -> new CollisionDetected(snapshot, it.getKey(), it.getValue()));
-    }*/
+                .map(it -> new CollisionDetected(snapshot, it.getKey(), it.getValue()));*/
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * Detect particles: giving the properties of the thingy ... get the type.
      */
     // TODO 6. Detect the final particle using its properties
-    /*public ParticleType detect(final Spin spin, final Charge charge, final BigDecimal massInMevC2) {
-        return Arrays.stream(ParticleType.values())
+    public ParticleType detect(final Spin spin, final Charge charge, final BigDecimal massInMevC2) {
+        /*return Arrays.stream(ParticleType.values())
                 .filter(it -> ParticleUtil.assertType(spin, charge, massInMevC2, it))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Unknown particle type"));
-    }*/
+                .orElseThrow(() -> new IllegalArgumentException("Unknown particle type"));*/
+        throw new UnsupportedOperationException();
+    }
 
 }
