@@ -2,15 +2,12 @@ package es.malvarez.microservices.cqrs.service;
 
 import es.malvarez.microservices.api.AcceleratorSink;
 import es.malvarez.microservices.api.Snapshot;
-import es.malvarez.microservices.cqrs.BroadcastSink;
 import es.malvarez.microservices.cqrs.EventStoreProcessor;
 import es.malvarez.microservices.cqrs.command.FindCollisions;
 import es.malvarez.microservices.cqrs.command.FindCollisionsHandler;
-import es.malvarez.microservices.cqrs.command.IdentifyParticles;
-import es.malvarez.microservices.cqrs.command.IdentifyParticlesHandler;
+import es.malvarez.microservices.cqrs.command.IdentifyParticle;
+import es.malvarez.microservices.cqrs.command.IdentifyParticleHandler;
 import es.malvarez.microservices.cqrs.event.CollisionFound;
-import es.malvarez.microservices.cqrs.event.ParticlesIdentified;
-import es.malvarez.microservices.cqrs.readmodel.CollisionReadModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.stereotype.Service;
@@ -22,27 +19,33 @@ import org.springframework.stereotype.Service;
 public class MessagingService {
 
     private final FindCollisionsHandler findCollisionsHandler;
-    private final IdentifyParticlesHandler identifyParticlesHandler;
+    private final IdentifyParticleHandler identifyParticleHandler;
 
     @Autowired
     public MessagingService(
             final FindCollisionsHandler findCollisionsHandler,
-            final IdentifyParticlesHandler identifyParticlesHandler
+            final IdentifyParticleHandler identifyParticleHandler
     ) {
         this.findCollisionsHandler = findCollisionsHandler;
-        this.identifyParticlesHandler = identifyParticlesHandler;
+        this.identifyParticleHandler = identifyParticleHandler;
     }
 
-    @StreamListener(AcceleratorSink.INPUT)
-    public void onCollisionFound(final Snapshot snapshot) {
+    /**
+     * TODO 5. Don't leave the accelerator alone man! it's dangerous
+     */
+    /*@StreamListener(AcceleratorSink.INPUT)
+    public void onSnapshot(final Snapshot snapshot) {
         this.findCollisionsHandler.handle(new FindCollisions(snapshot));
-    }
+    }*/
 
-    @StreamListener(
-            value = BroadcastSink.INPUT,
+    /**
+     * TODO 6. Link the particle detector with the collision finder
+     */
+    /*@StreamListener(
+            value = EventStoreProcessor.INPUT,
             condition = "headers['EVENT_TYPE']=='es.malvarez.microservices.cqrs.event.CollisionFound'"
     )
     public void onCollisionFound(final CollisionFound found) {
-        this.identifyParticlesHandler.handle(new IdentifyParticles(found));
-    }
+        found.getParticles().forEach(it -> this.identifyParticleHandler.handle(new IdentifyParticle(found.getCollision(), it)));
+    }*/
 }

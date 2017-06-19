@@ -4,15 +4,15 @@ import es.malvarez.microservices.api.DetectedParticle;
 import es.malvarez.microservices.api.Experiment;
 import es.malvarez.microservices.api.ParticleType;
 import es.malvarez.microservices.api.ParticleUtil;
-import es.malvarez.microservices.cqrs.command.IdentifyParticles;
-import es.malvarez.microservices.cqrs.event.CollisionFound;
-import es.malvarez.microservices.cqrs.event.ParticlesIdentified;
+import es.malvarez.microservices.cqrs.command.IdentifyParticle;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.*;
+import java.util.Map;
+import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -29,26 +29,23 @@ public class ParticleDetectorTest {
 
     @Test
     @Parameters
-    public void detectParticle(final IdentifyParticles command, final ParticleType type) throws Exception {
-        assertThat(
-                getParticle(particleDetector.identifyParticles(command)).map(DetectedParticle::getType).orElse(null)
-        ).isEqualTo(type);
+    public void detectParticle(final IdentifyParticle command, final ParticleType type) throws Exception {
+        assertThat(particleDetector.identifyParticle(command).getType()).isEqualTo(type);
     }
 
     @Test
     @Parameters
-    public void detectGluonOrPhoton(final IdentifyParticles command) throws Exception {
-        assertThat(
-                getParticle(particleDetector.identifyParticles(command)).map(DetectedParticle::getType).orElse(null)
-        ).isIn(ParticleType.GLUON, ParticleType.PHOTON);
+    public void detectGluonOrPhoton(final IdentifyParticle command) throws Exception {
+        assertThat(particleDetector.identifyParticle(command).getType()).isIn(ParticleType.GLUON, ParticleType.PHOTON);
     }
 
 
     private Object[] parametersForDetectParticle() {
         return list(ParticleType.values().length, Experiment.HAWKING)
+                .entrySet()
                 .stream()
-                .filter(it -> it.getType() != ParticleType.GLUON && it.getType() != ParticleType.PHOTON)
-                .map(it -> new Object[]{buildCommand(it), it.getType()})
+                .filter(it -> it.getValue() != ParticleType.GLUON && it.getValue() != ParticleType.PHOTON)
+                .map(it -> new Object[]{buildCommand(it.getKey()), it.getValue()})
                 .collect(Collectors.toList())
                 .toArray(new Object[ParticleType.values().length - 2]);
     }
@@ -61,17 +58,16 @@ public class ParticleDetectorTest {
                 .toArray(new Object[2]);
     }
 
-    private List<DetectedParticle> list(int size, final Experiment experiment) {
+    private Map<DetectedParticle, ParticleType> list(int size, final Experiment experiment) {
         return IntStream.range(0, size)
-                .mapToObj(i -> ParticleUtil.build(ParticleType.values()[i % ParticleType.values().length], experiment))
-                .collect(Collectors.toList());
+                .mapToObj(i -> ParticleType.values()[i])
+                .collect(Collectors.toMap(
+                        type -> ParticleUtil.build(type, experiment),
+                        Function.identity()
+                ));
     }
 
-    private IdentifyParticles buildCommand(final DetectedParticle particle) {
-        return new IdentifyParticles(new CollisionFound(UUID.randomUUID(), new Date(), Experiment.EINSTEIN, Collections.singletonList(particle)));
-    }
-
-    private Optional<DetectedParticle> getParticle(final ParticlesIdentified event) {
-        return event.getParticles().stream().findFirst();
+    private IdentifyParticle buildCommand(final DetectedParticle particle) {
+        return new IdentifyParticle(UUID.randomUUID(), particle);
     }
 }
