@@ -30,22 +30,16 @@ public class MessagingService {
         this.identifyParticleHandler = identifyParticleHandler;
     }
 
-    /**
-     * TODO 5. Don't leave the accelerator alone man! it's dangerous
-     */
-    /*@StreamListener(AcceleratorSink.INPUT)
+    @StreamListener(AcceleratorSink.INPUT)
     public void onSnapshot(final Snapshot snapshot) {
         this.findCollisionsHandler.handle(new FindCollisions(snapshot));
-    }*/
+    }
 
-    /**
-     * TODO 6. Link the particle detector with the collision finder
-     */
-    /*@StreamListener(
+    @StreamListener(
             value = EventStoreProcessor.INPUT,
             condition = "headers['EVENT_TYPE']=='es.malvarez.microservices.cqrs.event.CollisionFound'"
     )
     public void onCollisionFound(final CollisionFound found) {
         found.getParticles().forEach(it -> this.identifyParticleHandler.handle(new IdentifyParticle(found.getCollision(), it)));
-    }*/
+    }
 }

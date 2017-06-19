@@ -22,19 +22,15 @@ public class CollisionDetector implements IAggregate {
         return CollisionDetector.class.getName(); // single instance
     }
 
-    /**
-     * TODO 3. So lets detect collisions my friend!
-     */
     public List<CollisionFound> findCollisions(final FindCollisions command) {
-        /*final Snapshot snapshot = command.getSnapshot();
+        final Snapshot snapshot = command.getSnapshot();
         return snapshot.getParticles().stream()
                 .collect(Collectors.groupingBy(DetectedParticle::getExperiment))
                 .entrySet()
                 .stream()
                 .filter(it -> it.getValue().size() >= PARTICLES_PER_COLLISION)
                 .map(it -> new CollisionFound(UUID.randomUUID(), snapshot.getId(), snapshot.getWhen(), it.getKey(), it.getValue()))
-                .collect(Collectors.toList());*/
-        throw new UnsupportedOperationException();
+                .collect(Collectors.toList());
     }
 
     private void onCollisionFound(final CollisionFound found) {

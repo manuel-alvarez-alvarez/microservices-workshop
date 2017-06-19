@@ -11,8 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @SpringBootApplication
 @ComponentScan({"es.malvarez.microservices.web", "es.malvarez.microservices.cqrs"})
-// TODO 2. Enable spring streams for the CQRS/ES Monolith
-// @EnableBinding({AcceleratorSink.class, EventStoreProcessor.class})
+@EnableBinding({AcceleratorSink.class, EventStoreProcessor.class})
 public class CqrsApplication {
 
     public static void main(String[] args) {

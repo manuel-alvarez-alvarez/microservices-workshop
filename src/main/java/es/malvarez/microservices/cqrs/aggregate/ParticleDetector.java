@@ -19,17 +19,13 @@ public class ParticleDetector implements IAggregate {
         return ParticleDetector.class.getName(); // single instance
     }
 
-    /**
-     * TODO 4. Now it's time to figure it out the type of each particle!
-     */
     public ParticleIdentified identifyParticle(final IdentifyParticle command) {
-        /*DetectedParticle particle = command.getDetectedParticle();
+        DetectedParticle particle = command.getDetectedParticle();
         ParticleType type = Arrays.stream(ParticleType.values())
                 .filter(it -> ParticleUtil.assertType(particle.getSpin(), particle.getCharge(), particle.getMassInMevC2(), it))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Unknown particle type"));
-        return new ParticleIdentified(command.getCollision(), particle, type);*/
-        throw new UnsupportedOperationException();
+        return new ParticleIdentified(command.getCollision(), particle, type);
     }
 
     private void onParticleIdentified(final ParticleIdentified event) {

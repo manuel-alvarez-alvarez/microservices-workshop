@@ -1,21 +1,20 @@
 spring:
-# TODO 1. Configure spring streams to connect to kafka
-#  cloud:
-#    stream:
-#      bindings:
-#        accelerator_input:
-#          binder: kafka
-#          destination: accelerator
+  cloud:
+    stream:
+      bindings:
+        accelerator_input:
+          binder: kafka
+          destination: accelerator
 
-#        event_store_input:
-#          binder: kafka
-#          destination: events
-#        event_store_output:
-#          binder: kafka
-#          destination: events
+        event_store_input:
+          binder: kafka
+          destination: events
+        event_store_output:
+          binder: kafka
+          destination: events
 
-#      kafka:
-#        binder:
-#          headers:
-#            - AGGREGATE
-#            - EVENT_TYPE
+      kafka:
+        binder:
+          headers:
+            - AGGREGATE
+            - EVENT_TYPE

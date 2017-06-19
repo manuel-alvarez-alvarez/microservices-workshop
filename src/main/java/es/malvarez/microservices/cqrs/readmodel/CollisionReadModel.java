@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
-
 /**
  * And here is where we save some of our read models
  */
@@ -24,10 +22,7 @@ public class CollisionReadModel {
         this.collisionService = collisionService;
     }
 
-    /**
-     * TODO 7. Populate our "read model"
-     */
-    /*@StreamListener(
+    @StreamListener(
             value = EventStoreProcessor.INPUT,
             condition = "headers['EVENT_TYPE']=='es.malvarez.microservices.cqrs.event.CollisionFound'"
     )
@@ -38,16 +33,13 @@ public class CollisionReadModel {
                 .setSnapshot(event.getSnapshot(), event.getWhen());
         event.getParticles().forEach(particle -> builder.addParticle(particle, null));
         this.collisionService.newCollision(builder.build());
-    }*/
+    }
 
-    /**
-     * TODO 8. Update the type of the particles
-     */
-    /*@StreamListener(
+    @StreamListener(
             value = EventStoreProcessor.INPUT,
             condition = "headers['EVENT_TYPE']=='es.malvarez.microservices.cqrs.event.ParticleIdentified'"
     )
     public void onParticleIdentified(final ParticleIdentified event) {
         this.collisionService.updateParticle(event.getDetectedParticle().getId(), event.getType());
-    }*/
+    }
 }
