@@ -27,13 +27,11 @@ services:
     container_name: accelerator
     expose:
       - 8080
-      - 5005
     ports:
       - "8080:8080"
-      - "5006:5005"
     environment:
       - PROFILE=
-      - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
+      - JAVA_OPTS=
       - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
       - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZK_NODES=zookeeper
       - ACCELERATOR_COLLISION_INTERVAL=5000
@@ -45,13 +43,11 @@ services:
     container_name: cqrs
     expose:
       - 8080
-      - 5005
     ports:
       - "8081:8080"
-      - "5005:5005"
     environment:
       - PROFILE=
-      - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
+      - JAVA_OPTS=
       - API_HREF=http://localhost:8081/api
       - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
       - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZK_NODES=zookeeper
