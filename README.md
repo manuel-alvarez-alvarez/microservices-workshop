@@ -75,6 +75,28 @@ are my settings:
 
 ![Docker settings](https://raw.githubusercontent.com/manuel-alvarez-alvarez/microservices-workshop/microservices_start/docker-config.png)
 
+To impove the development experience two extra docker-compose files have been created:
+
+1. [docker-compose-dev-services.yml](https://github.com/manuel-alvarez-alvarez/microservices-workshop/blob/microservices_start/docker-compose-dev-services.yml) containing the background
+services needed to make everything work (Kafka, ZooKeeper, Eureka, Zuul, ...)
+2. [docker-compose-dev.yml](https://github.com/manuel-alvarez-alvarez/microservices-workshop/blob/microservices_start/docker-compose-dev.yml) containing the aggregates and read models
+
+To run it you only have to create a shared network:
+
+```shell
+$ docker network create microservices
+```
+
+And start the containers:
+
+```shell
+$ docker-compose -f docker-compose-dev-services.yml -p microservices-services up
+```
+
+```shell
+$ docker-compose -f docker-compose-dev.yml -p microservices-cqrs up
+```
+
 ## Troubleshooting
 
 If you face any issues, you can either ask me a question or compare the branches *microservices_start* and *microservices_end* that is a lousy solution implemented by me.
