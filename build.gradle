@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '1.5.2.RELEASE'
+        springBootVersion = '1.5.4.RELEASE'
         gradleDockerVersion = '1.2'
         gradleWrapperVersion = '3.5'
         workshopVersion = '1.0.1'
