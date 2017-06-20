@@ -12,12 +12,15 @@ import java.util.UUID;
  * So we found a collision in the system!!! congrats!
  */
 public class CollisionFound implements IEvent {
+
+    private final UUID collision;
     private final UUID snapshot;
     private final Date when;
     private final Experiment experiment;
     private final List<DetectedParticle> particles;
 
-    public CollisionFound(UUID snapshot, Date when, Experiment experiment, List<DetectedParticle> particles) {
+    public CollisionFound(final UUID collision, final UUID snapshot, final Date when, final Experiment experiment, final List<DetectedParticle> particles) {
+        this.collision = collision;
         this.snapshot = snapshot;
         this.when = when;
         this.experiment = experiment;
@@ -27,6 +30,10 @@ public class CollisionFound implements IEvent {
     @Override
     public String getAggregateId() {
         return "CollisionDetector"; // single instance
+    }
+
+    public UUID getCollision() {
+        return collision;
     }
 
     public UUID getSnapshot() {

@@ -1,1 +1,1 @@
-include 'ubiquitous-language', 'write-model', 'collision-read-model', 'registry', 'gateway'
+include 'ubiquitous-language', 'collision-detector', 'particle-detector', 'collision-read-model', 'registry', 'gateway'

@@ -3,7 +3,7 @@ buildscript {
         springBootVersion = '1.5.2.RELEASE'
         gradleDockerVersion = '1.2'
         gradleWrapperVersion = '3.5'
-        workshopVersion = '1.0.0'
+        workshopVersion = '1.0.1'
         junitParamsVersion = '1.1.0'
     }
     repositories {
@@ -42,7 +42,7 @@ configure(project(":ubiquitous-language")) {
     }
 }
 
-configure([project(":write-model"), project(":collision-read-model")]) {
+configure([project(":collision-detector"), project(":particle-detector"), project(":collision-read-model")]) {
 
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'docker'
@@ -53,7 +53,6 @@ configure([project(":write-model"), project(":collision-read-model")]) {
         compile('org.springframework.cloud:spring-cloud-stream')
         compile("es.malvarez.microservices.workshop:api:$workshopVersion")
         compile("es.malvarez.microservices.workshop:cqrs:$workshopVersion")
-        compile('org.springframework.cloud:spring-cloud-stream')
 
         testCompile('org.springframework.boot:spring-boot-starter-test')
         testCompile("pl.pragmatists:JUnitParams:$junitParamsVersion")
@@ -67,7 +66,7 @@ configure([project(":write-model"), project(":collision-read-model")]) {
     }
 }
 
-configure(project(":write-model")) {
+configure([project(":collision-detector"), project(":particle-detector")]) {
 
     springBoot {
         mainClass = "es.malvarez.microservices.wm.WriteModelApplication"
@@ -78,7 +77,7 @@ configure(project(":write-model")) {
     }
 
     task buildDocker(type: Docker) {
-        tag = "manvel7650/microservices-workshop-write-model"
+        tag = "manvel7650/microservices-workshop-${project.name}"
         tagVersion = 'latest'
         dockerfile = file("${projectDir}/src/main/docker/Dockerfile")
         doFirst {
@@ -100,6 +99,9 @@ configure(project(":collision-read-model")) {
         compile('org.springframework.cloud:spring-cloud-starter-stream-kafka')
         compile('org.springframework.cloud:spring-cloud-starter-eureka')
         compile('org.springframework.boot:spring-boot-starter-web')
+        compile('org.springframework.boot:spring-boot-starter-data-jpa')
+        compile('com.h2database:h2')
+        compile('org.liquibase:liquibase-core')
     }
 
     springBoot {

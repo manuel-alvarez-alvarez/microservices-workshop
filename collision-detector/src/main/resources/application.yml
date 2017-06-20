@@ -1,11 +1,16 @@
 spring:
-  application:
-    name: collision-read-model
   cloud:
     stream:
       bindings:
+        accelerator_input:
+          binder: kafka
+          destination: accelerator
+
         event_store_input:
-          group: collision
+          group: collision-detector
+          binder: kafka
+          destination: events
+        event_store_output:
           binder: kafka
           destination: events
 

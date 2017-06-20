@@ -30,20 +30,21 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - PROFILE=local
+      - PROFILE=
+      - JAVA_OPTS=
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZK_NODES=zookeeper
+      - ACCELERATOR_COLLISION_INTERVAL=5000
     depends_on:
       - kafka
 
   registry:
     image: manvel7650/microservices-workshop-registry:latest
     container_name: registry
-    expose:
-      - 8080
-    ports:
-      - "8090:8080"
     environment:
       - PROFILE=
       - JAVA_OPTS=
+      - EUREKA_CLIENT_SERVICE_URL_defaultZone=http://registry:8080/eureka
 
   gateway:
     image: manvel7650/microservices-workshop-gateway:latest
@@ -51,38 +52,47 @@ services:
     expose:
       - 8080
     ports:
-      - "8091:8080"
-    environment:
-      - PROFILE=
-      - JAVA_OPTS=
-    depends_on:
-      - registry
-
-  write-model:
-    image: manvel7650/microservices-workshop-write-model:latest
-    container_name: write-model
-    expose:
-      - 5005
-    ports:
-      - "5005:5005"
+      - "8081:8080"
     environment:
       - PROFILE=
       - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
+      - EUREKA_CLIENT_SERVICE_URL_defaultZone=http://registry:8080/eureka
+    depends_on:
+      - registry
+
+  particle-detector:
+    image: manvel7650/microservices-workshop-particle-detector:latest
+    container_name: particle-detector
+    environment:
+      - PROFILE=
+      - JAVA_OPTS=
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZK_NODES=zookeeper
+    depends_on:
+      - kafka
+
+  collision-detector:
+    image: manvel7650/microservices-workshop-collision-detector:latest
+    container_name: collision-detector
+    environment:
+      - PROFILE=
+      - JAVA_OPTS=
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZK_NODES=zookeeper
     depends_on:
       - kafka
 
   collision-read-model:
     image: manvel7650/microservices-workshop-collision-read-model:latest
     container_name: collision-read-model
-    expose:
-      - 8080
-      - 5005
-    ports:
-      - "8081:8080"
-      - "5006:5005"
     environment:
       - PROFILE=
-      - JAVA_OPTS=-Ddetector.name=lousy-detector -Ddetector.apiHref=http://localhost:8091/api -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
+      - JAVA_OPTS=
+      - API_HREF=http://localhost:8081/collisions/api
+      - API_MODE=collisions
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZK_NODES=zookeeper
+      - EUREKA_CLIENT_SERVICE_URL_defaultZone=http://registry:8080/eureka
     depends_on:
       - kafka
       - gateway

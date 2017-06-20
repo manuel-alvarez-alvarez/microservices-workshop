@@ -2,19 +2,8 @@ spring:
   application:
     name: gateway
 
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://registry:8080/eureka
-
 zuul:
   routes:
     collisions:
-      path: /collision/**
-      stripPrefix: false
+      path: /collisions/**
       serviceId: collision-read-model
-    statistics:
-      path: /statistic/**
-      stripPrefix: false
-      serviceId: statistic-read-model
-  prefix: /api
