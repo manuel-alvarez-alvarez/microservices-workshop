@@ -1,4 +1,4 @@
-package es.malvarez.microservices.cqrs;
+package es.malvarez.microservices.cqrs.controller;
 
 import es.malvarez.microservices.cqrs.domain.Collision;
 import es.malvarez.microservices.cqrs.service.CollisionService;
