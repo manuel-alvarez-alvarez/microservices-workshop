@@ -39,6 +39,12 @@ This new read model should:
 
 If you do it correctly it will be available at [http://localhost:8081/statistics/](http://localhost:8081/statistics/)
 
+### 3. Create a new read model and use differnt set of technologies (brave hearts only)
+
+Think about another possible read model that can be built using the existing events of our ubiquitous language and try to build a new read model / microservice using a totally different set of technologies (for instance Node.js).
+
+> **Hint**. You can use a [sidecar](http://projects.spring.io/spring-cloud/spring-cloud.html#_polyglot_support_with_sidecar) to do the linking between spring cloud and your read model.
+
 ## Build and run
 
 You can build the application just by running:
