@@ -1,0 +1,50 @@
+version: '2'
+
+services:
+
+  particle-detector:
+    image: manvel7650/microservices-workshop-particle-detector:latest
+    container_name: particle-detector
+    environment:
+      - PROFILE=
+      - JAVA_OPTS=
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZK_NODES=zookeeper
+      - KAFKA_GROUP=particle-detector
+    networks:
+      - microservices
+
+  collision-detector:
+    image: manvel7650/microservices-workshop-collision-detector:latest
+    container_name: collision-detector
+    environment:
+      - PROFILE=
+      - JAVA_OPTS=
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZK_NODES=zookeeper
+      - KAFKA_GROUP=collision-detector
+    networks:
+      - microservices
+
+  collision-read-model:
+    image: manvel7650/microservices-workshop-collision-read-model:latest
+    container_name: collision-read-model
+    expose:
+      - 5005
+    ports:
+      - "5005:5005"
+    environment:
+      - PROFILE=
+      - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
+      - API_HREF=http://localhost:8081/collisions/api
+      - API_MODE=collisions
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZK_NODES=zookeeper
+      - EUREKA_CLIENT_SERVICE_URL_defaultZone=http://registry:8080/eureka
+      - KAFKA_GROUP=collision-read-model
+    networks:
+      - microservices
+
+networks:
+  microservices:
+    external: true

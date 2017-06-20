@@ -1,0 +1,75 @@
+version: '2'
+
+services:
+
+  zookeeper:
+    image: wurstmeister/zookeeper:3.4.6
+    container_name: zookeper
+    expose:
+      - 2181
+    networks:
+      - microservices
+
+  kafka:
+    image: wurstmeister/kafka:0.10.2.1
+    container_name: kafka
+    expose:
+      - 9092
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: "kafka"
+      KAFKA_ADVERTISED_PORT: "9092"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - zookeeper
+    networks:
+      - microservices
+
+  accelerator:
+    image: manvel7650/microservices-workshop-accelerator:latest
+    container_name: accelerator
+    expose:
+      - 8080
+    ports:
+      - "8080:8080"
+    environment:
+      - PROFILE=
+      - JAVA_OPTS=
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZK_NODES=zookeeper
+      - ACCELERATOR_COLLISION_INTERVAL=5000
+    depends_on:
+      - kafka
+    networks:
+      - microservices
+
+  registry:
+    image: manvel7650/microservices-workshop-registry:latest
+    container_name: registry
+    environment:
+      - PROFILE=
+      - JAVA_OPTS=
+      - EUREKA_CLIENT_SERVICE_URL_defaultZone=http://registry:8080/eureka
+    networks:
+      - microservices
+
+  gateway:
+    image: manvel7650/microservices-workshop-gateway:latest
+    container_name: gateway
+    expose:
+      - 8080
+    ports:
+      - "8081:8080"
+    environment:
+      - PROFILE=
+      - JAVA_OPTS=
+      - EUREKA_CLIENT_SERVICE_URL_defaultZone=http://registry:8080/eureka
+    depends_on:
+      - registry
+    networks:
+      - microservices
+
+networks:
+  microservices:
+    external: true
