@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: statistics-read-model
+  cloud:
+    stream:
+      bindings:
+        event_store_input:
+          group: ${KAFKA_GROUP}
+          binder: kafka
+          destination: events
+
+      kafka:
+        binder:
+          headers:
+            - AGGREGATE
+            - EVENT_TYPE

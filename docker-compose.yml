@@ -87,19 +87,47 @@ services:
   collision-read-model:
     image: manvel7650/microservices-workshop-collision-read-model:latest
     container_name: collision-read-model
-    expose:
-      - 5005
-    ports:
-      - "5005:5005"
     environment:
       - PROFILE=
-      - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
+      - JAVA_OPTS=
       - API_HREF=http://localhost:8081/collisions/api
       - API_MODE=collisions
       - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
       - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZK_NODES=zookeeper
       - EUREKA_CLIENT_SERVICE_URL_defaultZone=http://registry:8080/eureka
       - KAFKA_GROUP=collision-read-model
+    depends_on:
+      - kafka
+      - gateway
+
+  collision-read-model-2:
+    image: manvel7650/microservices-workshop-collision-read-model:latest
+    container_name: collision-read-model-2
+    environment:
+      - PROFILE=
+      - JAVA_OPTS=
+      - API_HREF=http://localhost:8081/collisions/api
+      - API_MODE=collisions
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZK_NODES=zookeeper
+      - EUREKA_CLIENT_SERVICE_URL_defaultZone=http://registry:8080/eureka
+      - KAFKA_GROUP=collision-read-model-2
+    depends_on:
+      - kafka
+      - gateway
+
+  statistics-read-model:
+    image: manvel7650/microservices-workshop-statistics-read-model:latest
+    container_name: statistics-read-model
+    environment:
+      - PROFILE=
+      - JAVA_OPTS=
+      - API_HREF=http://localhost:8081/statistics/api
+      - API_MODE=statistics
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZK_NODES=zookeeper
+      - EUREKA_CLIENT_SERVICE_URL_defaultZone=http://registry:8080/eureka
+      - KAFKA_GROUP=statistics-read-model
     depends_on:
       - kafka
       - gateway

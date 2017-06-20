@@ -7,3 +7,6 @@ zuul:
     collisions:
       path: /collisions/**
       serviceId: collision-read-model
+    statistics:
+      path: /statistics/**
+      serviceId: statistics-read-model

@@ -42,7 +42,7 @@ configure(project(":ubiquitous-language")) {
     }
 }
 
-configure([project(":collision-detector"), project(":particle-detector"), project(":collision-read-model")]) {
+configure([project(":collision-detector"), project(":particle-detector"), project(":collision-read-model"), project(":statistics-read-model")]) {
 
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'docker'
@@ -92,7 +92,7 @@ configure([project(":collision-detector"), project(":particle-detector")]) {
     build.finalizedBy buildDocker
 }
 
-configure(project(":collision-read-model")) {
+configure([project(":collision-read-model"), project(":statistics-read-model")]) {
 
     dependencies {
         compile("es.malvarez.microservices.workshop:web:$workshopVersion")
@@ -104,12 +104,8 @@ configure(project(":collision-read-model")) {
         compile('org.liquibase:liquibase-core')
     }
 
-    springBoot {
-        mainClass = "es.malvarez.microservices.collision.CollisionReadModelApplication"
-    }
-
     task buildDocker(type: Docker) {
-        tag = "manvel7650/microservices-workshop-collision-read-model"
+        tag = "manvel7650/microservices-workshop-${project.name}"
         tagVersion = 'latest'
         dockerfile = file("${projectDir}/src/main/docker/Dockerfile")
         doFirst {
@@ -122,6 +118,21 @@ configure(project(":collision-read-model")) {
     }
     buildDocker.group = 'build'
     build.finalizedBy buildDocker
+}
+
+configure(project(":statistics-read-model")) {
+
+    springBoot {
+        mainClass = "es.malvarez.microservices.statistics.StatisticsReadModelApplication"
+    }
+}
+
+configure(project(":collision-read-model")) {
+
+    springBoot {
+        mainClass = "es.malvarez.microservices.collision.CollisionReadModelApplication"
+    }
+
 }
 
 configure([project(":registry"), project(":gateway")]) {
