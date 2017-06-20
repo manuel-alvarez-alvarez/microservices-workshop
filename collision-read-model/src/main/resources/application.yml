@@ -5,7 +5,7 @@ spring:
     stream:
       bindings:
         event_store_input:
-          group: collision
+          group: ${KAFKA_GROUP}
           binder: kafka
           destination: events
 

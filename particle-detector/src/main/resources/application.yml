@@ -3,7 +3,7 @@ spring:
     stream:
       bindings:
         event_store_input:
-          group: particle-detector
+          group: ${KAFKA_GROUP}
           binder: kafka
           destination: events
         event_store_output:

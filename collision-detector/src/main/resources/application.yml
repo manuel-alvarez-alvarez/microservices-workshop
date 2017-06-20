@@ -7,7 +7,7 @@ spring:
           destination: accelerator
 
         event_store_input:
-          group: collision-detector
+          group: ${KAFKA_GROUP}
           binder: kafka
           destination: events
         event_store_output:
