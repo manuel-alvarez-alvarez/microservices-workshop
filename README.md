@@ -39,6 +39,12 @@ This new read model should:
 
 If you do it correctly it will be available at [http://localhost:8081/statistics/](http://localhost:8081/statistics/)
 
+### 3. Create a new read model and use differnt set of technologies (brave hearts only)
+
+Think about another possible read model that can be built using the existing events of our ubiquitous language and try to build a new read model / microservice using a totally different set of technologies (for instance Node.js).
+
+> **Hint**. You can use a [sidecar](http://projects.spring.io/spring-cloud/spring-cloud.html#_polyglot_support_with_sidecar) to do the linking between spring cloud and your read model.
+
 ## Build and run
 
 You can build the application just by running:
@@ -68,6 +74,28 @@ Be careful with docker this time, if some of your containers die inexplicably th
 are my settings:
 
 ![Docker settings](https://raw.githubusercontent.com/manuel-alvarez-alvarez/microservices-workshop/microservices_start/docker-config.png)
+
+To impove the development experience two extra docker-compose files have been created:
+
+1. [docker-compose-dev-services.yml](https://github.com/manuel-alvarez-alvarez/microservices-workshop/blob/microservices_start/docker-compose-dev-services.yml) containing the background
+services needed to make everything work (Kafka, ZooKeeper, Eureka, Zuul, ...)
+2. [docker-compose-dev.yml](https://github.com/manuel-alvarez-alvarez/microservices-workshop/blob/microservices_start/docker-compose-dev.yml) containing the aggregates and read models
+
+To run it you only have to create a shared network:
+
+```shell
+$ docker network create microservices
+```
+
+And start the containers:
+
+```shell
+$ docker-compose -f docker-compose-dev-services.yml -p microservices-services up
+```
+
+```shell
+$ docker-compose -f docker-compose-dev.yml -p microservices-cqrs up
+```
 
 ## Troubleshooting
 

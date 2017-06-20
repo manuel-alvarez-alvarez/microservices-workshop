@@ -1,0 +1,76 @@
+version: '2'
+
+services:
+
+  particle-detector:
+    image: manvel7650/microservices-workshop-particle-detector:latest
+    container_name: particle-detector
+    environment:
+      - PROFILE=
+      - JAVA_OPTS=
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZK_NODES=zookeeper
+      - KAFKA_GROUP=particle-detector
+    networks:
+      - microservices
+
+  collision-detector:
+    image: manvel7650/microservices-workshop-collision-detector:latest
+    container_name: collision-detector
+    environment:
+      - PROFILE=
+      - JAVA_OPTS=
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZK_NODES=zookeeper
+      - KAFKA_GROUP=collision-detector
+    networks:
+      - microservices
+
+  collision-read-model:
+    image: manvel7650/microservices-workshop-collision-read-model:latest
+    container_name: collision-read-model
+    environment:
+      - PROFILE=
+      - JAVA_OPTS=
+      - API_HREF=http://localhost:8081/collisions/api
+      - API_MODE=collisions
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZK_NODES=zookeeper
+      - EUREKA_CLIENT_SERVICE_URL_defaultZone=http://registry:8080/eureka
+      - KAFKA_GROUP=collision-read-model
+    networks:
+      - microservices
+
+  collision-read-model-2:
+    image: manvel7650/microservices-workshop-collision-read-model:latest
+    container_name: collision-read-model-2
+    environment:
+      - PROFILE=
+      - JAVA_OPTS=
+      - API_HREF=http://localhost:8081/collisions/api
+      - API_MODE=collisions
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZK_NODES=zookeeper
+      - EUREKA_CLIENT_SERVICE_URL_defaultZone=http://registry:8080/eureka
+      - KAFKA_GROUP=collision-read-model-2
+    networks:
+      - microservices
+
+  statistics-read-model:
+    image: manvel7650/microservices-workshop-statistics-read-model:latest
+    container_name: statistics-read-model
+    environment:
+      - PROFILE=
+      - JAVA_OPTS=
+      - API_HREF=http://localhost:8081/statistics/api
+      - API_MODE=statistics
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZK_NODES=zookeeper
+      - EUREKA_CLIENT_SERVICE_URL_defaultZone=http://registry:8080/eureka
+      - KAFKA_GROUP=statistics-read-model
+    networks:
+      - microservices
+
+networks:
+  microservices:
+    external: true
