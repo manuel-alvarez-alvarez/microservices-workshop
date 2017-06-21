@@ -62,7 +62,7 @@ $ docker-compose up
 It will start:
 1. The accelerator available at [http://localhost:8080](http://localhost:8080)
 2. A *Zookeeper* / *Kafka* instance
-3. An Eureka service registry
+3. An Eureka service registry available at [http://localhost:8888](http://localhost:8888)
 4. A Zuul gateway that will be used to connect to the collision read model [http://localhost:8081/collisions/](http://localhost:8081/collisions/)
 5. The collision detector write model
 6. The particle detector read model

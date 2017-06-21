@@ -47,6 +47,10 @@ services:
   registry:
     image: manvel7650/microservices-workshop-registry:latest
     container_name: registry
+    expose:
+      - 8888
+    ports:
+      - "8888:8080"
     environment:
       - PROFILE=
       - JAVA_OPTS=
